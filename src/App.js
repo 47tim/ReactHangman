@@ -1,6 +1,20 @@
 import './App.css';
+import React, { useState } from 'react;'
+
+// const wordList = (dictionary here)
+
+function randomWord() {
+  const index = Math.floor(Math.random())
+  return words[index];
+}
 
 function App() {
+
+  const numLives = 5
+  // States
+  const [word, setWord] = useState('');
+
+
   return (
     <div className="App">
       <h1>Hangman</h1>
