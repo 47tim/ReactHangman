@@ -73,7 +73,9 @@ function App() {
   const [displayWord, setDisplayWord] = useState([]);
   const [guessedLetters, setGuessedLetters] = useState(new Set());
   const [livesLeft, setLivesLeft] = useState(numLives);
-
+  const [endGame, setEndGame] = useState(false);
+  
+  
   useEffect(() => {
     fetch('/words.txt')
       .then(res => res.text())
@@ -116,12 +118,19 @@ function App() {
       }
       setDisplayWord(updatedDisplay);
     } else {
-      setLivesLeft(prev => prev - 1);
+      setLivesLeft(prev => {
+        const updatedLives = prev - 1;
+        if (updatedLives === 0) {
+          setEndGame(true);
+        }
+        return updatedLives;
+      });
     }
+    
   }
 
   function isDisabled(letter) {
-    return guessedLetters.has(letter);
+    return guessedLetters.has(letter) || endGame;
   }
 
   function getButtonStyle(letter) {
