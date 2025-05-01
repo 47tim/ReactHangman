@@ -83,41 +83,41 @@ function App() {
   
   useEffect(() => {
     fetch('/words.txt')
-    .then(res => res.text())
-    .then(text => {
-      const wordList = text
-        .split('\n')
-        .map(line => line.trim().split('|')[0].toUpperCase())
-        .filter(w => w.length > 0 && /^[A-Z]+$/.test(w));
-        
-      setWordList(wordList);
-
-      const newWord = wordList[Math.floor(Math.random() * wordList.length)];
-      setWord(newWord);
-      setDisplayWord(Array(newWord.length).fill('_'));
-    });
-
-
-    fetch('/definitions.txt')
-    .then(res => res.text())
-    .then(text => {
-      const lines = text.split('\n');
-      const defMap = {};
-      for (const line of lines) {
-        const parts = line.trim().split('|');
-        if (parts.length >= 3) {
-          const word = parts[0].toUpperCase();
-          const pos = parts[1];
-          const definition = parts[2];
-          defMap[word] = { pos, definition };
+      .then(res => res.text())
+      .then(text => {
+        const lines = text
+          .split('\n')
+          .map(l => l.replace(/^\uFEFF/, '').trim())  // removing bom
+          .filter(l => l.length > 0);
+  
+        const wl = [];
+        const defMap = {};
+  
+        for (const raw of lines) {
+          
+          const parts = raw.split('|');
+          if (parts.length < 3) continue;
+  
+          const key = parts[0].trim().toUpperCase();
+          const pos = parts[1].trim();
+          const definition = parts[2].trim();      
+          
+          wl.push(key);
+          if (!defMap[key]) {
+            defMap[key] = { pos, definition };
+          }
         }
-      }
-      setDefinitions(defMap);
-    });
-    
-
-
+  
+        setWordList(wl);
+        setDefinitions(defMap);
+  
+        const first = wl[Math.floor(Math.random() * wl.length)];
+        setWord(first);
+        setDisplayWord(Array(first.length).fill('_'));
+      })
+      .catch(err => console.error("error with words.txt", err));
   }, []);
+  
 
 
   function handleLogin(e) {
@@ -202,24 +202,29 @@ function App() {
     } : {};
   } 
 
+  const cleanWord = word.trim().toUpperCase();
+  const wordDef = definitions[cleanWord];
+
   return (
     <div className="App">
 
-      {endGame && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>You lost!</h2>
-            <p><strong>Word:</strong> {word}</p>
-            {definitions[word] && (
-              <>
-                <p><strong>Part of speech:</strong> {definitions[word].pos}</p>
-                <p><strong>Definition:</strong> {definitions[word].definition}</p>
-              </>
-            )}
-            <button onClick={startGame}>Try Again</button>
-          </div>
+     {endGame && (
+      <div className="popup">
+        <div className="popup-content">
+          <h2>You lost!</h2>
+          <p><strong>Word:</strong> {cleanWord}</p>
+          {wordDef ? (
+            <>
+              <p><strong>Part of speech:</strong> {wordDef.pos}</p>
+              <p><strong>Definition:</strong> {wordDef.definition}</p>
+            </>
+          ) : (
+            <p><em>No definition found.</em></p>
+          )}
+          <button onClick={startGame}>Try Again</button>
         </div>
-      )}
+      </div>
+    )}
   
 
       <h1>Hangman</h1>
