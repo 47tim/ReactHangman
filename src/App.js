@@ -1,6 +1,65 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
+<<<<<<< Updated upstream
+=======
+const hangmanStages = [
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   / \\  |
+        |
+  =========
+  `,
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   /    |
+        |
+  =========
+  `,
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+        |
+        |
+  =========
+  `,
+  `
+    +---+
+    |   |
+    O   |
+   /|   |
+        |
+        |
+  =========
+  `,
+  `
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+  =========
+  `,
+  `
+    +---+
+    |   |
+    O   |
+        |
+        |
+  =========
+  `
+];
+
+>>>>>>> Stashed changes
 function App() {
   const numLives = 5;
   const [word, setWord] = useState('');
@@ -8,14 +67,25 @@ function App() {
   const [displayWord, setDisplayWord] = useState([]);
   const [guessedLetters, setGuessedLetters] = useState(new Set());
   const [livesLeft, setLivesLeft] = useState(numLives);
+<<<<<<< Updated upstream
 
+=======
+  const [endGame, setEndGame] = useState(false);
+
+  // Login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Fetch word list
+>>>>>>> Stashed changes
   useEffect(() => {
     fetch('/words.txt')
       .then(res => res.text())
       .then(text => {
         const wordList = text.split('\n').map(w => w.trim().toUpperCase());
         setWordList(wordList);
-  
+
         const newWord = wordList[Math.floor(Math.random() * wordList.length)];
         setWord(newWord);
         setDisplayWord(Array(newWord.length).fill('_'));
@@ -28,6 +98,7 @@ function App() {
     setDisplayWord(Array(newWord.length).fill('_'));
     setGuessedLetters(new Set());
     setLivesLeft(numLives);
+    setEndGame(false);
   }
 
   function randomWord() {
@@ -66,6 +137,38 @@ function App() {
       cursor: 'not-allowed'
     } : {};
   }
+<<<<<<< Updated upstream
+=======
+
+  function handleLogin(e) {
+    e.preventDefault();
+    // Basic hardcoded auth
+    if (username === 'user' && password === 'pass') {
+      setIsLoggedIn(true);
+    } else {
+      alert('Invalid username or password');
+    }
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="login-container">
+        <h2>Login to Play Hangman</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            <label>Username: </label>
+            <input value={username} onChange={e => setUsername(e.target.value)} required />
+          </div>
+          <div>
+            <label>Password: </label>
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    );
+  }
+>>>>>>> Stashed changes
 
   return (
     <div className="App">
@@ -74,7 +177,7 @@ function App() {
       <div>
         {/* hangman drawing goes here */}
       </div>
-      
+
       <div className="displayWord">
         <p>{displayWord.join(' ')}</p>
       </div>
