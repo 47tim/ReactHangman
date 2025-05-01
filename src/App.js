@@ -3,71 +3,20 @@ import React, { useState, useEffect } from 'react';
 
 
 const hangmanStages = [
-
-  `
-    +---+
-    |   |
-    O   |
-   /|\\  |
-   / \\  |
-        |
-  =========
-  `,
-
-  `
-    +---+
-    |   |
-    O   |
-   /|\\  |
-   /    |
-        |
-  =========
-  `,
-
-  `
-    +---+
-    |   |
-    O   |
-   /|\\  |
-        |
-        |
-  =========
-  `,
-
-  `
-    +---+
-    |   |
-    O   |
-   /|   |
-        |
-        |
-  =========
-  `,
- 
-  `
-    +---+
-    |   |
-    O   |
-    |   |
-        |
-        |
-  =========
-  `,
- 
-  `
-    +---+
-    |   |
-    O   |
-        |
-        |
-  =========
-  `
+  "/hangmanIcon/0.png",
+  "/hangmanIcon/1.png",
+  "/hangmanIcon/2.png",
+  "/hangmanIcon/3.png",
+  "/hangmanIcon/4.png",
+  "/hangmanIcon/5.png",
+  "/hangmanIcon/6.png",
+  "/hangmanIcon/7.png"
 ];
 
 
 function App() {
 
-  const numLives = 5;
+  const numLives = 7;
   const [word, setWord] = useState('');
   const [wordList, setWordList] = useState([]);
   const [displayWord, setDisplayWord] = useState([]);
@@ -230,7 +179,7 @@ function App() {
       <h1>Hangman</h1>
 
       <div className="hangmanArt">
-        <pre>{hangmanStages[livesLeft]}</pre>
+      <img src={hangmanStages[numLives - livesLeft]} alt={`Hangman stage`} />
       </div>
       
       <div className="displayWord">
@@ -288,7 +237,6 @@ function App() {
         {/* win/lose message */}
       </div>
 
-      <button className="playAgain" onClick={startGame}>Play Again</button>
     </div>
   );
 }

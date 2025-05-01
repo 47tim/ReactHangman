@@ -11,3 +11,107 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --bg: #121212;
+  --fg: #e0e0e0;
+  --btn-bg: #1e1e1e;
+  --btn-fg: #e0e0e0;
+  --btn-border: #333;
+  --input-bg: #1f1f1f;
+  --input-fg: #e0e0e0;
+  --popup-bg: rgba(0,0,0,0.8);
+  --popup-content-bg: #1e1e1e;
+}
+
+body, .App, .login-container {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 1rem;
+}
+
+
+h1, h2, p, label {
+  color: var(--fg);
+}
+
+
+button {
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-border);
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button:disabled {
+  background-color: #2a2a2a;
+  color: #666;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  filter: brightness(1.2);
+}
+
+
+input {
+  background-color: var(--input-bg);
+  color: var(--input-fg);
+  border: 1px solid var(--btn-border);
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+}
+
+
+.displayWord, .livesLeft, .guessedLetters, .letters {
+  margin: 1rem 0;
+}
+
+
+.hangmanArt pre {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #f28b82;
+  margin: 1rem 0;
+}
+
+
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--popup-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.popup-content {
+  background: var(--popup-content-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.letters .row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.letters button {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.4rem;
+  border-radius: 8px;
+  padding: 0;
+  text-align: center;
+}
