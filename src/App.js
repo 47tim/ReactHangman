@@ -1,8 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
-<<<<<<< Updated upstream
-=======
 const hangmanStages = [
   `
     +---+
@@ -59,7 +57,6 @@ const hangmanStages = [
   `
 ];
 
->>>>>>> Stashed changes
 function App() {
   const numLives = 5;
   const [word, setWord] = useState('');
@@ -67,9 +64,6 @@ function App() {
   const [displayWord, setDisplayWord] = useState([]);
   const [guessedLetters, setGuessedLetters] = useState(new Set());
   const [livesLeft, setLivesLeft] = useState(numLives);
-<<<<<<< Updated upstream
-
-=======
   const [endGame, setEndGame] = useState(false);
 
   // Login state
@@ -78,7 +72,6 @@ function App() {
   const [password, setPassword] = useState('');
 
   // Fetch word list
->>>>>>> Stashed changes
   useEffect(() => {
     fetch('/words.txt')
       .then(res => res.text())
@@ -122,12 +115,18 @@ function App() {
       }
       setDisplayWord(updatedDisplay);
     } else {
-      setLivesLeft(prev => prev - 1);
+      setLivesLeft(prev => {
+        const updatedLives = prev - 1;
+        if (updatedLives === 0) {
+          setEndGame(true);
+        }
+        return updatedLives;
+      });
     }
   }
 
   function isDisabled(letter) {
-    return guessedLetters.has(letter);
+    return guessedLetters.has(letter) || endGame;
   }
 
   function getButtonStyle(letter) {
@@ -137,8 +136,6 @@ function App() {
       cursor: 'not-allowed'
     } : {};
   }
-<<<<<<< Updated upstream
-=======
 
   function handleLogin(e) {
     e.preventDefault();
@@ -168,14 +165,13 @@ function App() {
       </div>
     );
   }
->>>>>>> Stashed changes
 
   return (
     <div className="App">
       <h1>Hangman</h1>
 
-      <div>
-        {/* hangman drawing goes here */}
+      <div className="hangmanArt">
+        <pre>{hangmanStages[livesLeft]}</pre>
       </div>
 
       <div className="displayWord">
