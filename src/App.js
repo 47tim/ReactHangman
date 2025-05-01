@@ -1,7 +1,72 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
+
+const hangmanStages = [
+
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   / \\  |
+        |
+  =========
+  `,
+
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+   /    |
+        |
+  =========
+  `,
+
+  `
+    +---+
+    |   |
+    O   |
+   /|\\  |
+        |
+        |
+  =========
+  `,
+
+  `
+    +---+
+    |   |
+    O   |
+   /|   |
+        |
+        |
+  =========
+  `,
+ 
+  `
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+  =========
+  `,
+ 
+  `
+    +---+
+    |   |
+    O   |
+        |
+        |
+  =========
+  `
+];
+
+
 function App() {
+
   const numLives = 5;
   const [word, setWord] = useState('');
   const [wordList, setWordList] = useState([]);
@@ -65,14 +130,14 @@ function App() {
       color: '#888',
       cursor: 'not-allowed'
     } : {};
-  }
+  } 
 
   return (
     <div className="App">
       <h1>Hangman</h1>
 
-      <div>
-        {/* hangman drawing goes here */}
+      <div className="hangmanArt">
+        <pre>{hangmanStages[livesLeft]}</pre>
       </div>
       
       <div className="displayWord">
