@@ -28,6 +28,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [winGame, setWinGame] = useState(false);
+  const [streak, setStreak] = useState(0);
   
   
   useEffect(() => {
@@ -82,7 +84,7 @@ function App() {
   if (!isLoggedIn) {
     return (
       <div className="login-container">
-        <h2>Login to Play Hangman</h2>
+        <h2>Hangman Login</h2>
         <form onSubmit={handleLogin}>
           <div>
             <label>Username: </label>
@@ -105,6 +107,7 @@ function App() {
     setGuessedLetters(new Set());
     setLivesLeft(numLives);
     setEndGame(false);
+    setWinGame(false);
   }
 
   function randomWord() {
@@ -113,14 +116,16 @@ function App() {
   }
 
   function handleLetterClick(letter) {
-    if (guessedLetters.has(letter)) return;
 
+    if (guessedLetters.has(letter) || endGame || winGame) return;
     const updatedGuessed = new Set(guessedLetters);
     updatedGuessed.add(letter);
     setGuessedLetters(updatedGuessed);
+  
 
+    let updatedDisplay = [...displayWord];
+  
     if (word.includes(letter)) {
-      const updatedDisplay = [...displayWord];
       for (let i = 0; i < word.length; i++) {
         if (word[i] === letter) {
           updatedDisplay[i] = letter;
@@ -130,14 +135,24 @@ function App() {
     } else {
       setLivesLeft(prev => {
         const updatedLives = prev - 1;
-        if (updatedLives === 0) {
+        if (updatedLives === 0){
           setEndGame(true);
+          setStreak(0);
         }
         return updatedLives;
       });
     }
-    
+  
+    if (updatedDisplay.join('') === word) {
+      setWinGame(true);
+      setStreak(s => s + 1);
+    }
   }
+  
+  function isDisabled(letter) {
+    return guessedLetters.has(letter) || endGame || winGame;
+  }
+  
 
   function isDisabled(letter) {
     return guessedLetters.has(letter) || endGame;
@@ -157,10 +172,14 @@ function App() {
   return (
     <div className="App">
 
+      <div className="streak">
+        Streak: {streak}
+      </div>
+
      {endGame && (
       <div className="popup">
         <div className="popup-content">
-          <h2>You lost!</h2>
+          <h2>YOU LOSE</h2>
           <p><strong>Word:</strong> {cleanWord}</p>
           {wordDef ? (
             <>
@@ -174,9 +193,31 @@ function App() {
         </div>
       </div>
     )}
+
+    {winGame && (
+      <div className="popup">
+        <div className="popup-content">
+          <h2>YOU WON</h2>
+          <p><strong>Word:</strong> {cleanWord}</p>
+          {wordDef ? (
+           <>
+              <p><strong>Part of speech:</strong> {wordDef.pos}</p>
+              <p><strong>Definition:</strong> {wordDef.definition}</p>
+            </>
+          ) : (
+            <p><em>No definition found.</em></p>
+          )}
+          <button onClick={startGame}>Play Again</button>
+        </div>
+      </div>
+    )}
   
 
       <h1>Hangman</h1>
+
+      <div className="guessedLetters">
+        <p>Guessed: {[...guessedLetters].join(', ')}</p>
+      </div>
 
       <div className="hangmanArt">
       <img src={hangmanStages[numLives - livesLeft]} alt={`Hangman stage`} />
@@ -190,9 +231,7 @@ function App() {
         <p>{livesLeft} {livesLeft === 1 ? 'life' : 'lives'} left</p>
       </div>
 
-      <div className="guessedLetters">
-        <p>Guessed: {[...guessedLetters].join(', ')}</p>
-      </div>
+     
 
       <div className="letters">
         <div className="row">
@@ -234,7 +273,7 @@ function App() {
       </div>
 
       <div className="message">
-        {/* win/lose message */}
+  
       </div>
 
     </div>
