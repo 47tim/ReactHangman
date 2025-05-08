@@ -31,7 +31,6 @@ function App() {
   const [winGame, setWinGame] = useState(false);
   const [streak, setStreak] = useState(0);
   
-  
   useEffect(() => {
     fetch('/words.txt')
       .then(res => res.text())
