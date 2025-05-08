@@ -152,11 +152,6 @@ function App() {
   function isDisabled(letter) {
     return guessedLetters.has(letter) || endGame || winGame;
   }
-  
-
-  function isDisabled(letter) {
-    return guessedLetters.has(letter) || endGame;
-  }
 
   function getButtonStyle(letter) {
     return isDisabled(letter) ? {
